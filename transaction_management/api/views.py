@@ -5,5 +5,12 @@ from .serializers import TransactionSerializer
 
 
 class TransactionCreate(generics.ListCreateAPIView):
-    queryset = TransactionModel.objects.all()
     serializer_class = TransactionSerializer
+
+    def get_queryset(self):
+        if "pk" in self.kwargs:
+            queryset = TransactionModel.objects.filter(pk=self.kwargs["pk"])
+        else:
+            queryset = TransactionModel.objects.all()
+    
+        return queryset
